@@ -3,8 +3,9 @@ const crypto = require('crypto');
 const app = express();
 app.use(express.json());
 const urlMap = {};
-function generateCode() {
-  return crypto.randomBytes(3).toString('hex'); 
+function shorten() {
+    let result = crypto.randomBytes(3).toString('hex'); 
+    return result;
 }
 app.post('/shorten', (req, res) => {
   let { originalUrl, validity, shortCode } = req.body;
@@ -13,7 +14,7 @@ app.post('/shorten', (req, res) => {
   }
   validity = parseInt(validity) || 30;
   if (!shortCode || urlMap[shortCode]) {
-    shortCode = generateCode();
+    shortCode = shorten();
   }
   const expiry = new Date(Date.now() + validity * 60 * 1000);
   urlMap[shortCode] = {
